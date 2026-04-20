@@ -83,6 +83,7 @@ set(libraries
     localization_slam_toolbox
     lifelong_slam_toolbox
     map_and_localization_slam_toolbox
+    camera_slam_toolbox
 )
 
 find_package(PkgConfig REQUIRED)
@@ -272,6 +273,11 @@ target_link_libraries(map_and_localization_slam_toolbox localization_slam_toolbo
 add_executable(map_and_localization_slam_toolbox_node src/experimental/slam_toolbox_map_and_localization_node.cpp)
 target_link_libraries(map_and_localization_slam_toolbox_node map_and_localization_slam_toolbox)
 
+add_library(camera_slam_toolbox src/slam_toolbox_camera.cpp)
+target_link_libraries(camera_slam_toolbox async_slam_toolbox toolbox_common kartoSlamToolbox ${Boost_LIBRARIES})
+add_executable(camera_slam_toolbox_node src/slam_toolbox_camera_node.cpp)
+target_link_libraries(camera_slam_toolbox_node camera_slam_toolbox)
+
 #### Merging maps tool
 add_executable(merge_maps_kinematic src/merge_maps_kinematic.cpp)
 target_link_libraries(merge_maps_kinematic kartoSlamToolbox toolbox_common)
@@ -286,6 +292,7 @@ target_link_libraries(merge_maps_kinematic kartoSlamToolbox toolbox_common)
 #  target_link_libraries(lifelong_metrics_test lifelong_slam_toolbox)
 #endif()
 
+rclcpp_components_register_nodes(camera_slam_toolbox "slam_toolbox::CameraSlamToolbox")
 rclcpp_components_register_nodes(async_slam_toolbox "slam_toolbox::AsynchronousSlamToolbox")
 rclcpp_components_register_nodes(sync_slam_toolbox "slam_toolbox::SynchronousSlamToolbox")
 rclcpp_components_register_nodes(localization_slam_toolbox "slam_toolbox::LocalizationSlamToolbox")
@@ -300,6 +307,7 @@ install(TARGETS decentralized_multirobot_slam_toolbox_node
                 map_and_localization_slam_toolbox_node
                 lifelong_slam_toolbox_node
                 merge_maps_kinematic
+                camera_slam_toolbox_node
                 ${libraries}
                 kartoSlamToolbox
   ARCHIVE DESTINATION lib
