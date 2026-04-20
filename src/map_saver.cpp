@@ -30,7 +30,7 @@ MapSaver::MapSaver(NodeT node, const std::string & map_name)
   map_name_(map_name), received_map_(false)
 /*****************************************************************************/
 {
-  server_ = node->template create_service<slam_toolbox::srv::SaveMap>(
+  server_ = node->template create_service<slam_toolbox_camera::srv::SaveMap>(
     "slam_toolbox/save_map",
     std::bind(
       &MapSaver::saveMapCallback, this, std::placeholders::_1,
@@ -49,8 +49,8 @@ MapSaver::MapSaver(NodeT node, const std::string & map_name)
 /*****************************************************************************/
 bool MapSaver::saveMapCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::SaveMap::Request> req,
-  std::shared_ptr<slam_toolbox::srv::SaveMap::Response> response)
+  const std::shared_ptr<slam_toolbox_camera::srv::SaveMap::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::SaveMap::Response> response)
 /*****************************************************************************/
 {
   if (!received_map_) {

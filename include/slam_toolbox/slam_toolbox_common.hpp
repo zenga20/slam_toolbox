@@ -100,16 +100,16 @@ protected:
     std::shared_ptr<nav_msgs::srv::GetMap::Response> res);
   virtual bool serializePoseGraphCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Request> req,
-    std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Response> resp);
   virtual bool deserializePoseGraphCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp);
   virtual bool resetCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::Reset::Request> req,
-    std::shared_ptr<slam_toolbox::srv::Reset::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::Reset::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::Reset::Response> resp);
 
   // Loaders
   void loadSerializedPoseGraph(std::unique_ptr<karto::Mapper> &, std::unique_ptr<karto::Dataset> &);
@@ -147,8 +147,8 @@ protected:
   bool isPaused(const PausedApplication & app);
   bool pauseNewMeasurementsCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::Pause::Request> req,
-    std::shared_ptr<slam_toolbox::srv::Pause::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::Pause::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::Pause::Response> resp);
 
   // ROS-y-ness
   std::unique_ptr<tf2_ros::Buffer> tf_;
@@ -161,16 +161,16 @@ protected:
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<
       geometry_msgs::msg::PoseWithCovarianceStamped>> pose_pub_;
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<
-      slam_toolbox::msg::PoseGraph>> pose_graph_pub_;
+      slam_toolbox_camera::msg::PoseGraph>> pose_graph_pub_;
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<
-      slam_toolbox::msg::NewNodeEvent>> new_node_event_pub_;
+      slam_toolbox_camera::msg::NewNodeEvent>> new_node_event_pub_;
   std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<
-      slam_toolbox::msg::LoopClosureEvent>> loop_closure_event_pub_;
+      slam_toolbox_camera::msg::LoopClosureEvent>> loop_closure_event_pub_;
   std::shared_ptr<rclcpp::Service<nav_msgs::srv::GetMap>> ssMap_;
-  std::shared_ptr<rclcpp::Service<slam_toolbox::srv::Pause>> ssPauseMeasurements_;
-  std::shared_ptr<rclcpp::Service<slam_toolbox::srv::SerializePoseGraph>> ssSerialize_;
-  std::shared_ptr<rclcpp::Service<slam_toolbox::srv::DeserializePoseGraph>> ssDesserialize_;
-  std::shared_ptr<rclcpp::Service<slam_toolbox::srv::Reset>> ssReset_;
+  std::shared_ptr<rclcpp::Service<slam_toolbox_camera::srv::Pause>> ssPauseMeasurements_;
+  std::shared_ptr<rclcpp::Service<slam_toolbox_camera::srv::SerializePoseGraph>> ssSerialize_;
+  std::shared_ptr<rclcpp::Service<slam_toolbox_camera::srv::DeserializePoseGraph>> ssDesserialize_;
+  std::shared_ptr<rclcpp::Service<slam_toolbox_camera::srv::Reset>> ssReset_;
 
   // Storage for ROS parameters
   std::string odom_frame_, map_frame_, base_frame_, map_name_, scan_topic_;

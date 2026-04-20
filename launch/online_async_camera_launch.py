@@ -35,7 +35,7 @@ def generate_launch_description():
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
         default_value=os.path.join(
-            get_package_share_directory('slam_toolbox'),
+            get_package_share_directory('slam_toolbox_camera'),
             'config', 'mapper_params_camera_d435.yaml'),
         description='Full path to the ROS2 parameters file for the camera SLAM node')
 
@@ -52,7 +52,7 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
             }
         ],
-        package='slam_toolbox',
+        package='slam_toolbox_camera',
         executable='camera_slam_toolbox_node',
         name='slam_toolbox',
         output='screen',

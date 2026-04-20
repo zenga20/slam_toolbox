@@ -54,8 +54,8 @@ protected:
     sensor_msgs::msg::LaserScan::ConstSharedPtr scan) override;
   bool deserializePoseGraphCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp) override;
+    const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp) override;
 
   void evaluateNodeDepreciation(LocalizedRangeScan * range_scan);
   void removeFromSlamGraph(Vertex<LocalizedRangeScan> * vertex);

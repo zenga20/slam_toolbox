@@ -47,10 +47,10 @@ void MergeMapsKinematic::configure()
   sstmS_.push_back(this->create_publisher<nav_msgs::msg::MapMetaData>(
       "/map_metadata", qos));
 
-  ssMap_ = this->create_service<slam_toolbox::srv::MergeMaps>("slam_toolbox/merge_submaps",
+  ssMap_ = this->create_service<slam_toolbox_camera::srv::MergeMaps>("slam_toolbox/merge_submaps",
       std::bind(&MergeMapsKinematic::mergeMapCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
-  ssSubmap_ = this->create_service<slam_toolbox::srv::AddSubmap>("slam_toolbox/add_submap",
+  ssSubmap_ = this->create_service<slam_toolbox_camera::srv::AddSubmap>("slam_toolbox/add_submap",
       std::bind(&MergeMapsKinematic::addSubmapCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
 
@@ -70,8 +70,8 @@ MergeMapsKinematic::~MergeMapsKinematic()
 /*****************************************************************************/
 bool MergeMapsKinematic::addSubmapCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::AddSubmap::Request> req,
-  std::shared_ptr<slam_toolbox::srv::AddSubmap::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::AddSubmap::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::AddSubmap::Response> resp)
 /*****************************************************************************/
 {
   std::unique_ptr<Mapper> mapper = std::make_unique<Mapper>();
@@ -256,8 +256,8 @@ void MergeMapsKinematic::transformScan(
 /*****************************************************************************/
 bool MergeMapsKinematic::mergeMapCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::MergeMaps::Request> req,
-  std::shared_ptr<slam_toolbox::srv::MergeMaps::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::MergeMaps::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::MergeMaps::Response> resp)
 /*****************************************************************************/
 {
   RCLCPP_INFO(get_logger(), "Merging maps!");

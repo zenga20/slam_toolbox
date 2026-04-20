@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>slam_toolbox</name>
+  <name>slam_toolbox_camera</name>
   <version>2.9.0</version>
   <description>
      This package provides a sped up improved slam karto with updated SDK and visualization and modification toolsets

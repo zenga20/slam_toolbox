@@ -26,10 +26,10 @@ def generate_launch_description():
 
     start_sync_slam_toolbox_node = LifecycleNode(
           parameters=[
-            get_package_share_directory("slam_toolbox") + '/config/mapper_params_offline.yaml',
+            get_package_share_directory("slam_toolbox_camera") + '/config/mapper_params_offline.yaml',
             {'use_lifecycle_manager': use_lifecycle_manager}
           ],
-          package='slam_toolbox',
+          package='slam_toolbox_camera',
           executable='sync_slam_toolbox_node',
           name='slam_toolbox',
           output='screen',

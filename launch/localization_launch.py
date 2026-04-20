@@ -28,7 +28,7 @@ def generate_launch_description():
         description='Use simulation/Gazebo clock')
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
-        default_value=os.path.join(get_package_share_directory("slam_toolbox"),
+        default_value=os.path.join(get_package_share_directory("slam_toolbox_camera"),
                                    'config', 'mapper_params_localization.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -53,7 +53,7 @@ def generate_launch_description():
             'use_sim_time': use_sim_time
           }
         ],
-        package='slam_toolbox',
+        package='slam_toolbox_camera',
         executable='localization_slam_toolbox_node',
         name='slam_toolbox',
         output='screen',

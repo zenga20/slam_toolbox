@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(slam_toolbox)
+project(slam_toolbox_camera)
 
 set(CMAKE_BUILD_TYPE Release) #None, Debug, Release, RelWithDebInfo, MinSizeRel
 if(NOT CMAKE_CXX_STANDARD)

@@ -473,29 +473,29 @@ void SlamToolbox::setROSInterfaces()
   ssMap_ = this->create_service<nav_msgs::srv::GetMap>("slam_toolbox/dynamic_map",
       std::bind(&SlamToolbox::mapCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
-  ssPauseMeasurements_ = this->create_service<slam_toolbox::srv::Pause>(
+  ssPauseMeasurements_ = this->create_service<slam_toolbox_camera::srv::Pause>(
     "slam_toolbox/pause_new_measurements",
     std::bind(&SlamToolbox::pauseNewMeasurementsCallback,
     this, std::placeholders::_1,
     std::placeholders::_2, std::placeholders::_3));
-  ssSerialize_ = this->create_service<slam_toolbox::srv::SerializePoseGraph>(
+  ssSerialize_ = this->create_service<slam_toolbox_camera::srv::SerializePoseGraph>(
     "slam_toolbox/serialize_map",
     std::bind(&SlamToolbox::serializePoseGraphCallback, this,
     std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-  ssDesserialize_ = this->create_service<slam_toolbox::srv::DeserializePoseGraph>(
+  ssDesserialize_ = this->create_service<slam_toolbox_camera::srv::DeserializePoseGraph>(
     "slam_toolbox/deserialize_map",
     std::bind(&SlamToolbox::deserializePoseGraphCallback, this,
     std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-  ssReset_ = this->create_service<slam_toolbox::srv::Reset>(
+  ssReset_ = this->create_service<slam_toolbox_camera::srv::Reset>(
     "slam_toolbox/reset",
     std::bind(&SlamToolbox::resetCallback, this,
     std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-  pose_graph_pub_ = this->create_publisher<slam_toolbox::msg::PoseGraph>(
+  pose_graph_pub_ = this->create_publisher<slam_toolbox_camera::msg::PoseGraph>(
     "slam_toolbox/pose_graph",
     rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
-  new_node_event_pub_ = this->create_publisher<slam_toolbox::msg::NewNodeEvent>(
+  new_node_event_pub_ = this->create_publisher<slam_toolbox_camera::msg::NewNodeEvent>(
     "slam_toolbox/new_node_event", 10);
-  loop_closure_event_pub_ = this->create_publisher<slam_toolbox::msg::LoopClosureEvent>(
+  loop_closure_event_pub_ = this->create_publisher<slam_toolbox_camera::msg::LoopClosureEvent>(
     "slam_toolbox/loop_closure_event", 10);
 
   scan_filter_sub_ =
@@ -598,18 +598,18 @@ void SlamToolbox::loadPoseGraphByParams()
   geometry_msgs::msg::Pose pose;
   bool dock = false;
   if (shouldStartWithPoseGraph(filename, pose, dock)) {
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req =
-      std::make_shared<slam_toolbox::srv::DeserializePoseGraph::Request>();
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp =
-      std::make_shared<slam_toolbox::srv::DeserializePoseGraph::Response>();
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req =
+      std::make_shared<slam_toolbox_camera::srv::DeserializePoseGraph::Request>();
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp =
+      std::make_shared<slam_toolbox_camera::srv::DeserializePoseGraph::Response>();
     req->initial_pose = pose;
     req->filename = filename;
     if (dock) {
       req->match_type =
-        slam_toolbox::srv::DeserializePoseGraph::Request::START_AT_FIRST_NODE;
+        slam_toolbox_camera::srv::DeserializePoseGraph::Request::START_AT_FIRST_NODE;
     } else {
       req->match_type =
-        slam_toolbox::srv::DeserializePoseGraph::Request::START_AT_GIVEN_POSE;
+        slam_toolbox_camera::srv::DeserializePoseGraph::Request::START_AT_GIVEN_POSE;
     }
 
     deserializePoseGraphCallback(nullptr, req, resp);
@@ -975,7 +975,7 @@ void SlamToolbox::publishPoseGraph()
     return;
   }
 
-  auto msg = std::make_unique<slam_toolbox::msg::PoseGraph>();
+  auto msg = std::make_unique<slam_toolbox_camera::msg::PoseGraph>();
 
   auto * graph = smapper_->getMapper()->GetGraph();
   if (!graph) return;
@@ -1000,7 +1000,7 @@ void SlamToolbox::publishPoseGraph()
       const auto * lrs = vertex.second->GetObject();
       if (!lrs) { continue; }
 
-      slam_toolbox::msg::GraphNode node_msg;
+      slam_toolbox_camera::msg::GraphNode node_msg;
       node_msg.node_id = lrs->GetUniqueId();
 
       // Cache the corrected pose to avoid multiple function calls
@@ -1042,7 +1042,7 @@ void SlamToolbox::publishPoseGraph()
     auto * link_info = dynamic_cast<karto::LinkInfo *>(base_label);
     if (!link_info) { continue; }
 
-    slam_toolbox::msg::GraphEdge edge_msg;
+    slam_toolbox_camera::msg::GraphEdge edge_msg;
     edge_msg.source_id = src_obj->GetUniqueId();
     edge_msg.target_id = dst_obj->GetUniqueId();
 
@@ -1078,7 +1078,7 @@ void SlamToolbox::publishNewNodeEvent(const karto::LocalizedRangeScan* lrs)
     return;
   }
 
-  slam_toolbox::msg::NewNodeEvent ev;
+  slam_toolbox_camera::msg::NewNodeEvent ev;
   ev.stamp = scan_header.stamp;
   ev.new_node_id = lrs->GetUniqueId();
 
@@ -1172,8 +1172,8 @@ bool SlamToolbox::mapCallback(
 /*****************************************************************************/
 bool SlamToolbox::pauseNewMeasurementsCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::Pause::Request> req,
-  std::shared_ptr<slam_toolbox::srv::Pause::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::Pause::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::Pause::Response> resp)
 /*****************************************************************************/
 {
   bool curr_state = isPaused(NEW_MEASUREMENTS);
@@ -1197,8 +1197,8 @@ bool SlamToolbox::isPaused(const PausedApplication & app)
 /*****************************************************************************/
 bool SlamToolbox::serializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
   std::string filename = req->filename;
@@ -1289,14 +1289,14 @@ void SlamToolbox::loadSerializedPoseGraph(
 /*****************************************************************************/
 bool SlamToolbox::deserializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
-  if (req->match_type == slam_toolbox::srv::DeserializePoseGraph::Request::UNSET) {
+  if (req->match_type == slam_toolbox_camera::srv::DeserializePoseGraph::Request::UNSET) {
     RCLCPP_ERROR(get_logger(), "Deserialization called without valid"
       " processor type set. Undefined behavior!");
-    resp->result = slam_toolbox::srv::DeserializePoseGraph::Response::RESULT_INVALID_PROCESSOR_TYPE;
+    resp->result = slam_toolbox_camera::srv::DeserializePoseGraph::Response::RESULT_INVALID_PROCESSOR_TYPE;
     return false;
   }
 
@@ -1304,7 +1304,7 @@ bool SlamToolbox::deserializePoseGraphCallback(
 
   if (filename.empty()) {
     RCLCPP_WARN(get_logger(), "No map file given!");
-    resp->result = slam_toolbox::srv::DeserializePoseGraph::Response::RESULT_INVALID_FILENAME;
+    resp->result = slam_toolbox_camera::srv::DeserializePoseGraph::Response::RESULT_INVALID_FILENAME;
     return true;
   }
 
@@ -1319,11 +1319,11 @@ bool SlamToolbox::deserializePoseGraphCallback(
   if (!serialization::read(filename, *mapper, *dataset, shared_from_this())) {
     RCLCPP_ERROR(get_logger(), "DeserializePoseGraph: Failed to read "
       "file: %s.", filename.c_str());
-    resp->result = slam_toolbox::srv::DeserializePoseGraph::Response::RESULT_FAILED_TO_READ_FILE;
+    resp->result = slam_toolbox_camera::srv::DeserializePoseGraph::Response::RESULT_FAILED_TO_READ_FILE;
     return true;
   }
   RCLCPP_DEBUG(get_logger(), "DeserializePoseGraph: Successfully read file.");
-  resp->result = slam_toolbox::srv::DeserializePoseGraph::Response::RESULT_SUCCESS;
+  resp->result = slam_toolbox_camera::srv::DeserializePoseGraph::Response::RESULT_SUCCESS;
 
   loadSerializedPoseGraph(mapper, dataset);
   updateMap();
@@ -1347,7 +1347,7 @@ bool SlamToolbox::deserializePoseGraphCallback(
     default:
       RCLCPP_FATAL(get_logger(),
         "Deserialization called without valid processor type set.");
-      resp->result = slam_toolbox::srv::DeserializePoseGraph::Response::RESULT_INVALID_PROCESSOR_TYPE;
+      resp->result = slam_toolbox_camera::srv::DeserializePoseGraph::Response::RESULT_INVALID_PROCESSOR_TYPE;
   }
 
   return true;
@@ -1356,8 +1356,8 @@ bool SlamToolbox::deserializePoseGraphCallback(
 /*****************************************************************************/
 bool SlamToolbox::resetCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::Reset::Request> req,
-  std::shared_ptr<slam_toolbox::srv::Reset::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::Reset::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::Reset::Response> resp)
 /*****************************************************************************/
 {
   boost::mutex::scoped_lock lock(smapper_mutex_);

@@ -42,9 +42,9 @@ DecentralizedMultiRobotSlamToolbox::DecentralizedMultiRobotSlamToolbox(rclcpp::N
   localized_scan_topic_ = this->get_parameter("scan_share_topic").as_string();
   RCLCPP_INFO(get_logger(), "Sharing scans on:  %s topic", localized_scan_topic_.c_str());
 
-  localized_scan_pub_ = this->create_publisher<slam_toolbox::msg::LocalizedLaserScan>(
+  localized_scan_pub_ = this->create_publisher<slam_toolbox_camera::msg::LocalizedLaserScan>(
     localized_scan_topic_, 10);
-  localized_scan_sub_ = this->create_subscription<slam_toolbox::msg::LocalizedLaserScan>(
+  localized_scan_sub_ = this->create_subscription<slam_toolbox_camera::msg::LocalizedLaserScan>(
     localized_scan_topic_, 10, std::bind(
       &DecentralizedMultiRobotSlamToolbox::localizedScanCallback,
       this, std::placeholders::_1));
@@ -90,7 +90,7 @@ void DecentralizedMultiRobotSlamToolbox::laserCallback(
 
 /*****************************************************************************/
 void DecentralizedMultiRobotSlamToolbox::localizedScanCallback(
-  slam_toolbox::msg::LocalizedLaserScan::ConstSharedPtr localized_scan)
+  slam_toolbox_camera::msg::LocalizedLaserScan::ConstSharedPtr localized_scan)
 {
   std::string scan_ns = localized_scan->scan.header.frame_id.substr(
     0, localized_scan->scan.header.frame_id.find('/'));
@@ -191,7 +191,7 @@ LocalizedRangeScan * DecentralizedMultiRobotSlamToolbox::addExternalScan(
 
 /*****************************************************************************/
 LaserRangeFinder * DecentralizedMultiRobotSlamToolbox::getLaser(
-  const slam_toolbox::msg::LocalizedLaserScan::ConstSharedPtr localized_scan)
+  const slam_toolbox_camera::msg::LocalizedLaserScan::ConstSharedPtr localized_scan)
 /*****************************************************************************/
 {
   const std::string & frame = localized_scan->scan.header.frame_id;
@@ -220,7 +220,7 @@ void DecentralizedMultiRobotSlamToolbox::publishLocalizedScan(
   const rclcpp::Time & t)
 /*****************************************************************************/
 {
-  slam_toolbox::msg::LocalizedLaserScan scan_msg;
+  slam_toolbox_camera::msg::LocalizedLaserScan scan_msg;
 
   scan_msg.scan = *scan;
 
@@ -263,8 +263,8 @@ void DecentralizedMultiRobotSlamToolbox::publishLocalizedScan(
 /*****************************************************************************/
 bool DecentralizedMultiRobotSlamToolbox::deserializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
   if (req->match_type == procType::LOCALIZE_AT_POSE) {

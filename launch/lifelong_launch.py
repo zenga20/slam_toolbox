@@ -30,7 +30,7 @@ def generate_launch_description():
         description='Enable bond connection during node activation')
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
-        default_value=os.path.join(get_package_share_directory("slam_toolbox"),
+        default_value=os.path.join(get_package_share_directory("slam_toolbox_camera"),
                                    'config', 'mapper_params_lifelong.yaml'),
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
     declare_use_sim_time_argument = DeclareLaunchArgument(
@@ -52,7 +52,7 @@ def generate_launch_description():
               'use_sim_time': use_sim_time
             }
           ],
-          package='slam_toolbox',
+          package='slam_toolbox_camera',
           executable='lifelong_slam_toolbox_node',
           name='slam_toolbox',
           output='screen',

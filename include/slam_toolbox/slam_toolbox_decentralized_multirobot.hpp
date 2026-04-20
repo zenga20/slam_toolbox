@@ -46,16 +46,16 @@ protected:
   void laserCallback(sensor_msgs::msg::LaserScan::ConstSharedPtr scan) override;
   bool deserializePoseGraphCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp) override;
+    const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp) override;
   void localizedScanCallback(
-    slam_toolbox::msg::LocalizedLaserScan::ConstSharedPtr localized_scan);
+    slam_toolbox_camera::msg::LocalizedLaserScan::ConstSharedPtr localized_scan);
   LaserRangeFinder * getLaser(
-    const slam_toolbox::msg::LocalizedLaserScan::ConstSharedPtr localized_scan);
+    const slam_toolbox_camera::msg::LocalizedLaserScan::ConstSharedPtr localized_scan);
   using SlamToolbox::getLaser;
 
-  std::shared_ptr<rclcpp::Publisher<slam_toolbox::msg::LocalizedLaserScan>> localized_scan_pub_;
-  rclcpp::Subscription<slam_toolbox::msg::LocalizedLaserScan>::SharedPtr localized_scan_sub_;
+  std::shared_ptr<rclcpp::Publisher<slam_toolbox_camera::msg::LocalizedLaserScan>> localized_scan_pub_;
+  rclcpp::Subscription<slam_toolbox_camera::msg::LocalizedLaserScan>::SharedPtr localized_scan_sub_;
   std::string localized_scan_topic_;
   std::string host_ns_;
 };

@@ -3,7 +3,7 @@
 namespace slam_toolbox {
 
 LoopClosureListener::LoopClosureListener(
-    std::weak_ptr<rclcpp_lifecycle::LifecyclePublisher<slam_toolbox::msg::LoopClosureEvent>> loop_closure_event_pub,
+    std::weak_ptr<rclcpp_lifecycle::LifecyclePublisher<slam_toolbox_camera::msg::LoopClosureEvent>> loop_closure_event_pub,
     std::weak_ptr<rclcpp::Clock> clock,
     std::function<void()> loop_closure_callback)
 : loop_closure_event_pub_(std::move(loop_closure_event_pub)),
@@ -17,7 +17,7 @@ void LoopClosureListener::EndLoopClosure(const std::string & /*rInfo*/) {
     return;
   }
 
-  slam_toolbox::msg::LoopClosureEvent event;
+  slam_toolbox_camera::msg::LoopClosureEvent event;
   event.stamp = sclk->now();
   spub->publish(event);
 
