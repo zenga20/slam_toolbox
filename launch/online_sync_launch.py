@@ -12,7 +12,7 @@ from nav2_common.launch import HasNodeParams
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
     params_file = LaunchConfiguration('params_file')
-    default_params_file = os.path.join(get_package_share_directory("slam_toolbox"),
+    default_params_file = os.path.join(get_package_share_directory("slam_toolbox_camera"),
                                        'config', 'mapper_params_online_sync.yaml')
 
     declare_use_sim_time_argument = DeclareLaunchArgument(
@@ -44,7 +44,7 @@ def generate_launch_description():
           actual_params_file,
           {'use_sim_time': use_sim_time}
         ],
-        package='slam_toolbox',
+        package='slam_toolbox_camera',
         executable='sync_slam_toolbox_node',
         name='slam_toolbox',
         output='screen')

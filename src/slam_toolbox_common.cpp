@@ -189,16 +189,16 @@ void SlamToolbox::setROSInterfaces()
   ssMap_ = this->create_service<nav_msgs::srv::GetMap>("slam_toolbox/dynamic_map",
       std::bind(&SlamToolbox::mapCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
-  ssPauseMeasurements_ = this->create_service<slam_toolbox::srv::Pause>(
+  ssPauseMeasurements_ = this->create_service<slam_toolbox_camera::srv::Pause>(
     "slam_toolbox/pause_new_measurements",
     std::bind(&SlamToolbox::pauseNewMeasurementsCallback,
     this, std::placeholders::_1,
     std::placeholders::_2, std::placeholders::_3));
-  ssSerialize_ = this->create_service<slam_toolbox::srv::SerializePoseGraph>(
+  ssSerialize_ = this->create_service<slam_toolbox_camera::srv::SerializePoseGraph>(
     "slam_toolbox/serialize_map",
     std::bind(&SlamToolbox::serializePoseGraphCallback, this,
     std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-  ssDesserialize_ = this->create_service<slam_toolbox::srv::DeserializePoseGraph>(
+  ssDesserialize_ = this->create_service<slam_toolbox_camera::srv::DeserializePoseGraph>(
     "slam_toolbox/deserialize_map",
     std::bind(&SlamToolbox::deserializePoseGraphCallback, this,
     std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
@@ -274,18 +274,18 @@ void SlamToolbox::loadPoseGraphByParams()
   geometry_msgs::msg::Pose2D pose;
   bool dock = false;
   if (shouldStartWithPoseGraph(filename, pose, dock)) {
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req =
-      std::make_shared<slam_toolbox::srv::DeserializePoseGraph::Request>();
-    std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp =
-      std::make_shared<slam_toolbox::srv::DeserializePoseGraph::Response>();
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req =
+      std::make_shared<slam_toolbox_camera::srv::DeserializePoseGraph::Request>();
+    std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp =
+      std::make_shared<slam_toolbox_camera::srv::DeserializePoseGraph::Response>();
     req->initial_pose = pose;
     req->filename = filename;
     if (dock) {
       req->match_type =
-        slam_toolbox::srv::DeserializePoseGraph::Request::START_AT_FIRST_NODE;
+        slam_toolbox_camera::srv::DeserializePoseGraph::Request::START_AT_FIRST_NODE;
     } else {
       req->match_type =
-        slam_toolbox::srv::DeserializePoseGraph::Request::START_AT_GIVEN_POSE;
+        slam_toolbox_camera::srv::DeserializePoseGraph::Request::START_AT_GIVEN_POSE;
     }
 
     deserializePoseGraphCallback(nullptr, req, resp);
@@ -600,8 +600,8 @@ bool SlamToolbox::mapCallback(
 /*****************************************************************************/
 bool SlamToolbox::pauseNewMeasurementsCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::Pause::Request> req,
-  std::shared_ptr<slam_toolbox::srv::Pause::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::Pause::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::Pause::Response> resp)
 /*****************************************************************************/
 {
   bool curr_state = isPaused(NEW_MEASUREMENTS);
@@ -625,8 +625,8 @@ bool SlamToolbox::isPaused(const PausedApplication & app)
 /*****************************************************************************/
 bool SlamToolbox::serializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::SerializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::SerializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
   std::string filename = req->filename;
@@ -711,11 +711,11 @@ void SlamToolbox::loadSerializedPoseGraph(
 /*****************************************************************************/
 bool SlamToolbox::deserializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
-  if (req->match_type == slam_toolbox::srv::DeserializePoseGraph::Request::UNSET) {
+  if (req->match_type == slam_toolbox_camera::srv::DeserializePoseGraph::Request::UNSET) {
     RCLCPP_ERROR(get_logger(), "Deserialization called without valid"
       " processor type set. Undefined behavior!");
     return false;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(slam_toolbox)
+project(slam_toolbox_camera)
 
 set(CMAKE_BUILD_TYPE Release) #None, Debug, Release, RelWithDebInfo, MinSizeRel
 if(NOT CMAKE_CXX_STANDARD)
@@ -70,6 +70,7 @@ set(libraries
     sync_slam_toolbox
     localization_slam_toolbox
     lifelong_slam_toolbox
+    camera_slam_toolbox
 )
 
 find_package(PkgConfig REQUIRED)
@@ -165,6 +166,14 @@ target_link_libraries(lifelong_slam_toolbox toolbox_common kartoSlamToolbox ${Bo
 add_executable(lifelong_slam_toolbox_node src/experimental/slam_toolbox_lifelong_node.cpp)
 target_link_libraries(lifelong_slam_toolbox_node lifelong_slam_toolbox)
 
+#### Camera (D435) SLAM variant
+add_library(camera_slam_toolbox src/slam_toolbox_camera.cpp)
+ament_target_dependencies(camera_slam_toolbox ${dependencies})
+target_link_libraries(camera_slam_toolbox async_slam_toolbox toolbox_common kartoSlamToolbox ${Boost_LIBRARIES})
+rosidl_target_interfaces(camera_slam_toolbox ${PROJECT_NAME} "rosidl_typesupport_cpp")
+add_executable(camera_slam_toolbox_node src/slam_toolbox_camera_node.cpp)
+target_link_libraries(camera_slam_toolbox_node camera_slam_toolbox)
+
 #### Merging maps tool
 add_executable(merge_maps_kinematic src/merge_maps_kinematic.cpp)
 target_link_libraries(merge_maps_kinematic kartoSlamToolbox toolbox_common)
@@ -185,6 +194,7 @@ install(TARGETS async_slam_toolbox_node
                 localization_slam_toolbox_node
                 lifelong_slam_toolbox_node
                 merge_maps_kinematic
+                camera_slam_toolbox_node
                 ${libraries}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
