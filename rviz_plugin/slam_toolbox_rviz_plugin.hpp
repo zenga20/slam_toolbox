@@ -139,16 +139,16 @@ protected:
   QFrame * _line;
 
   rclcpp::Node::SharedPtr ros_node_;
-  rclcpp::Client<slam_toolbox::srv::Clear>::SharedPtr _clearChanges;
-  rclcpp::Client<slam_toolbox::srv::LoopClosure>::SharedPtr _saveChanges;
-  rclcpp::Client<slam_toolbox::srv::SaveMap>::SharedPtr _saveMap;
-  rclcpp::Client<slam_toolbox::srv::ClearQueue>::SharedPtr _clearQueue;
-  rclcpp::Client<slam_toolbox::srv::ToggleInteractive>::SharedPtr _interactive;
-  rclcpp::Client<slam_toolbox::srv::Pause>::SharedPtr _pause_measurements;
-  rclcpp::Client<slam_toolbox::srv::AddSubmap>::SharedPtr _load_submap_for_merging;
-  rclcpp::Client<slam_toolbox::srv::MergeMaps>::SharedPtr _merge;
-  rclcpp::Client<slam_toolbox::srv::SerializePoseGraph>::SharedPtr _serialize;
-  rclcpp::Client<slam_toolbox::srv::DeserializePoseGraph>::SharedPtr _load_map;
+  rclcpp::Client<slam_toolbox_camera::srv::Clear>::SharedPtr _clearChanges;
+  rclcpp::Client<slam_toolbox_camera::srv::LoopClosure>::SharedPtr _saveChanges;
+  rclcpp::Client<slam_toolbox_camera::srv::SaveMap>::SharedPtr _saveMap;
+  rclcpp::Client<slam_toolbox_camera::srv::ClearQueue>::SharedPtr _clearQueue;
+  rclcpp::Client<slam_toolbox_camera::srv::ToggleInteractive>::SharedPtr _interactive;
+  rclcpp::Client<slam_toolbox_camera::srv::Pause>::SharedPtr _pause_measurements;
+  rclcpp::Client<slam_toolbox_camera::srv::AddSubmap>::SharedPtr _load_submap_for_merging;
+  rclcpp::Client<slam_toolbox_camera::srv::MergeMaps>::SharedPtr _merge;
+  rclcpp::Client<slam_toolbox_camera::srv::SerializePoseGraph>::SharedPtr _serialize;
+  rclcpp::Client<slam_toolbox_camera::srv::DeserializePoseGraph>::SharedPtr _load_map;
 
   std::unique_ptr<std::thread> _thread;
 

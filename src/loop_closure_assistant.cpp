@@ -44,11 +44,11 @@ LoopClosureAssistant::LoopClosureAssistant(
   tfB_ = std::make_unique<tf2_ros::TransformBroadcaster>(node_);
   solver_ = mapper_->getScanSolver();
 
-  ssClear_manual_ = node_->create_service<slam_toolbox::srv::Clear>(
+  ssClear_manual_ = node_->create_service<slam_toolbox_camera::srv::Clear>(
     "slam_toolbox/clear_changes", std::bind(&LoopClosureAssistant::clearChangesCallback, 
     this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
   
-  ssLoopClosure_ = node_->create_service<slam_toolbox::srv::LoopClosure>(
+  ssLoopClosure_ = node_->create_service<slam_toolbox_camera::srv::LoopClosure>(
     "slam_toolbox/manual_loop_closure", std::bind(&LoopClosureAssistant::manualLoopClosureCallback,
     this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
   
@@ -61,7 +61,7 @@ LoopClosureAssistant::LoopClosureAssistant(
     node_->get_node_logging_interface(),
     node_->get_node_topics_interface(),
     node_->get_node_services_interface());
-  ssInteractive_ = node_->create_service<slam_toolbox::srv::ToggleInteractive>(
+  ssInteractive_ = node_->create_service<slam_toolbox_camera::srv::ToggleInteractive>(
     "slam_toolbox/toggle_interactive_mode", std::bind(&LoopClosureAssistant::interactiveModeCallback,
     this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
@@ -186,8 +186,8 @@ void LoopClosureAssistant::publishGraph()
 /*****************************************************************************/
 bool LoopClosureAssistant::manualLoopClosureCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::LoopClosure::Request> req, 
-  std::shared_ptr<slam_toolbox::srv::LoopClosure::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::LoopClosure::Request> req, 
+  std::shared_ptr<slam_toolbox_camera::srv::LoopClosure::Response> resp)
 /*****************************************************************************/
 {
   if(!enable_interactive_mode_)
@@ -235,8 +235,8 @@ bool LoopClosureAssistant::manualLoopClosureCallback(
 /*****************************************************************************/
 bool LoopClosureAssistant::interactiveModeCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::ToggleInteractive::Request>  req,
-  std::shared_ptr<slam_toolbox::srv::ToggleInteractive::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::ToggleInteractive::Request>  req,
+  std::shared_ptr<slam_toolbox_camera::srv::ToggleInteractive::Response> resp)
 /*****************************************************************************/
 {
   if(!enable_interactive_mode_)
@@ -279,8 +279,8 @@ void LoopClosureAssistant::moveNode(
 /*****************************************************************************/
 bool LoopClosureAssistant::clearChangesCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::Clear::Request> req, 
-  std::shared_ptr<slam_toolbox::srv::Clear::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::Clear::Request> req, 
+  std::shared_ptr<slam_toolbox_camera::srv::Clear::Response> resp)
 /*****************************************************************************/
 {
   if(!enable_interactive_mode_)

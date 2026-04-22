@@ -56,16 +56,16 @@ public:
 private:
   bool manualLoopClosureCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::LoopClosure::Request> req, 
-    std::shared_ptr<slam_toolbox::srv::LoopClosure::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::LoopClosure::Request> req, 
+    std::shared_ptr<slam_toolbox_camera::srv::LoopClosure::Response> resp);
   bool clearChangesCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::Clear::Request> req, 
-    std::shared_ptr<slam_toolbox::srv::Clear::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::Clear::Request> req, 
+    std::shared_ptr<slam_toolbox_camera::srv::Clear::Response> resp);
   bool interactiveModeCallback(
     const std::shared_ptr<rmw_request_id_t> request_header,
-    const std::shared_ptr<slam_toolbox::srv::ToggleInteractive::Request>  req,
-    std::shared_ptr<slam_toolbox::srv::ToggleInteractive::Response> resp);
+    const std::shared_ptr<slam_toolbox_camera::srv::ToggleInteractive::Request>  req,
+    std::shared_ptr<slam_toolbox_camera::srv::ToggleInteractive::Response> resp);
 
   void moveNode(const int& id, const Eigen::Vector3d& pose);
   void addMovedNodes(const int& id, Eigen::Vector3d vec);
@@ -74,9 +74,9 @@ private:
   laser_utils::ScanHolder * scan_holder_;
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr scan_publisher_;
-  rclcpp::Service<slam_toolbox::srv::Clear>::SharedPtr ssClear_manual_;
-  rclcpp::Service<slam_toolbox::srv::LoopClosure>::SharedPtr ssLoopClosure_;
-  rclcpp::Service<slam_toolbox::srv::ToggleInteractive>::SharedPtr ssInteractive_;
+  rclcpp::Service<slam_toolbox_camera::srv::Clear>::SharedPtr ssClear_manual_;
+  rclcpp::Service<slam_toolbox_camera::srv::LoopClosure>::SharedPtr ssLoopClosure_;
+  rclcpp::Service<slam_toolbox_camera::srv::ToggleInteractive>::SharedPtr ssInteractive_;
   boost::mutex moved_nodes_mutex_;
   std::map<int, Eigen::Vector3d> moved_nodes_;
   karto::Mapper * mapper_;

@@ -28,7 +28,7 @@ SynchronousSlamToolbox::SynchronousSlamToolbox(rclcpp::NodeOptions options)
 : SlamToolbox(options)
 /*****************************************************************************/
 {
-  ssClear_ = this->create_service<slam_toolbox::srv::ClearQueue>("slam_toolbox/clear_queue",
+  ssClear_ = this->create_service<slam_toolbox_camera::srv::ClearQueue>("slam_toolbox/clear_queue",
       std::bind(&SynchronousSlamToolbox::clearQueueCallback, this,
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
@@ -92,8 +92,8 @@ void SynchronousSlamToolbox::laserCallback(
 /*****************************************************************************/
 bool SynchronousSlamToolbox::clearQueueCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::ClearQueue::Request> req,
-  std::shared_ptr<slam_toolbox::srv::ClearQueue::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::ClearQueue::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::ClearQueue::Response> resp)
 /*****************************************************************************/
 {
   RCLCPP_INFO(get_logger(), "SynchronousSlamToolbox: "
@@ -108,8 +108,8 @@ bool SynchronousSlamToolbox::clearQueueCallback(
 /*****************************************************************************/
 bool SynchronousSlamToolbox::deserializePoseGraphCallback(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Request> req,
-  std::shared_ptr<slam_toolbox::srv::DeserializePoseGraph::Response> resp)
+  const std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Request> req,
+  std::shared_ptr<slam_toolbox_camera::srv::DeserializePoseGraph::Response> resp)
 /*****************************************************************************/
 {
   if (req->match_type == procType::LOCALIZE_AT_POSE) {
